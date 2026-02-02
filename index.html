@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Made by Sulthan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#F7E9D7;
+      --title:#2E6FA3;
+      --cta:#7A5A52;
+      --ctaText:#F7E9D7;
+      --highlight:#7A5A52;
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+      --radiusXL:26px;
+    }
+
+    *{ box-sizing:border-box }
+
+    body{
+      margin:0;
+      font-family:system-ui, Segoe UI, Roboto, Arial;
+      background:var(--bg);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:24px 14px;
+      color:#111827;
+    }
+
+    .phone{
+      width:min(420px, 96vw);
+      background:var(--bg);
+      border-radius:34px;
+      border:10px solid #101010;
+      box-shadow:0 20px 60px rgba(0,0,0,.12);
+      padding:18px 14px 22px;
+    }
+
+    .header{
+      text-align:center;
+      margin:18px 0 14px;
+    }
+    .welcome{
+      font-family:cursive;
+      color:var(--title);
+      font-size:50px;
+      margin:0px 0 6px;
+      line-height:1;
+    }
+    .madeby{
+      margin:0;
+      font-weight:800;
+      letter-spacing:4px;
+      font-size:20px;
+      color:var(--title);
+      text-transform:uppercase;
+    }
+
+    .carousel{
+      display:flex;
+      gap:14px;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      padding:6px 4px 0;
+    }
+    .carousel::-webkit-scrollbar{ display:none }
+
+    .card{
+      flex:0 0 100%;
+      scroll-snap-align:start;
+      background:var(--card-bg);
+      border-radius:var(--radiusXL);
+      padding:22px 18px 18px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(0,0,0,.05);
+      position:relative;
+      height:auto;
+    }
+
+    .card h2{
+      margin:0 0 10px;
+      font-size:40px;
+      line-height:.98;
+      letter-spacing:1.5px;
+      color:var(--highlight);
+      text-transform:uppercase;
+      padding-right:54px;
+      word-break:break-word;
+    }
+
+    .desc{
+      margin:0;
+      color:#F7E9D7;
+      font-size:15px;
+      line-height:1.6;
+      font-family: 'Poppins';
+    }
+
+    .arrow-link{
+      position:absolute;
+      top:16px;
+      right:16px;
+      width:34px;
+      height:34px;
+      display:grid;
+      place-items:center;
+      background:transparent;
+      text-decoration:none;
+      opacity:.50;
+      transition:transform .15s ease, opacity .15s ease;
+    }
+    .arrow-link:hover{
+      transform:translateY(-1px);
+      opacity:1;
+    }
+
+    .cta{
+      margin-top:18px;
+      width:100%;
+      padding:14px 14px;
+      border:0;
+      border-radius:999px;
+      background:var(--cta);
+      color:var(--ctaText);
+      font-weight:800;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      cursor:pointer;
+      box-shadow:0 10px 24px rgba(0,0,0,.12);
+    }
+    .cta:hover{ filter:brightness(1.03) }
+  </style>
+</head>
+
+<body>
+  <main class="phone">
+    <header class="header">
+      <div class="welcome">Welcome</div>
+      <p class="madeby">Made By Sulthan</p>
+    </header>
+
+    <section class="carousel" id="carousel"></section>
+  </main>
+
+  <script>
+    const data = [
+      {
+        title:"Finance",
+        description:"You can record your daily transactions here, just click the button.",
+        url:"financebysulthan.netlify.app",
+        color:"#4196a8",
+        buttonText:"financebysuthan"
+      },
+      {
+        title:"Coming Soon",
+        description:"Coming Soon",
+        url:"Coming Soon",
+        color:"#F2C6AC",
+        buttonText:"Coming Soon"
+      },
+    ];
+
+    const carousel = document.getElementById("carousel");
+    let cardWidth = 0;
+
+    function arrowIcon(){
+      return `
+        <svg width="26" height="26" viewBox="0 0 24 24">
+          <path fill="#F2A26B"
+            d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42
+               9.3-9.29H14V3z"/>
+          <path fill="#F2A26B"
+            d="M5 5h7v2H7v10h10v-5h2v7H5V5z"/>
+        </svg>
+      `;
+    }
+
+    function createCard(item){
+      const card = document.createElement("article");
+      card.className = "card";
+      card.style.setProperty("--card-bg", item.color);
+
+      card.innerHTML = `
+        <a class="arrow-link"
+           href="${item.url}"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Buka ${item.title}">
+          ${arrowIcon()}
+        </a>
+
+        <h2>${item.title}</h2>
+        <p class="desc">${item.description}</p>
+
+        <button class="cta" type="button">
+          ${item.buttonText || `Buka ${item.title}`}
+        </button>
+      `;
+
+      card.querySelector(".cta").addEventListener("click", () => {
+        if(item.url && item.url.trim() !== ""){
+          window.open(item.url, "_blank", "noopener,noreferrer");
+        }
+      });
+
+      return card;
+    }
+
+    function render(){
+      carousel.innerHTML = "";
+
+      const firstClone = createCard(data[0]);
+      const lastClone  = createCard(data[data.length - 1]);
+
+      carousel.appendChild(lastClone);
+      data.forEach(item => carousel.appendChild(createCard(item)));
+      carousel.appendChild(firstClone);
+
+      requestAnimationFrame(() => {
+        cardWidth = carousel.querySelector(".card").getBoundingClientRect().width;
+        carousel.scrollLeft = cardWidth;
+      });
+    }
+
+    carousel.addEventListener("scroll", () => {
+      if(!cardWidth) return;
+
+      if(carousel.scrollLeft <= 0){
+        carousel.scrollLeft = cardWidth * data.length;
+      }
+      else if(carousel.scrollLeft >= cardWidth * (data.length + 1)){
+        carousel.scrollLeft = cardWidth;
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
